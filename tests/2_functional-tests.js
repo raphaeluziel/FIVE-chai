@@ -55,8 +55,8 @@ suite('Functional Tests', function() {
             // Test the status and the text response (see the example above). 
             // Please follow the order -status, -text. We rely on that in our tests.
             // It should respond 'Hello Guest'
-            assert.fail(res.status, 200);
-            assert.fail(res.text, 'hello Guest');
+            assert.equal(res.status, 200, 'response status should be 200');
+            assert.equal(res.text, 'hello Guest', 'response should be hello Guest');
             done();   // Always call the 'done()' callback when finished.
           });
       });
@@ -64,14 +64,14 @@ suite('Functional Tests', function() {
       /**  Another one... **/
       test('Test GET /hello with your name',  function(done){ // Don't forget the callback...
          chai.request(server)             // 'server' is the Express App
-          .get('/hello?name=xy_z') /** <=== Put your name in the query **/ 
+          .get('/hello?name=RAPHAEL') /** <=== Put your name in the query **/ 
           .end(function(err, res){        // res is the response object
           
             // Your tests here.
             // Replace assert.fail(). Make the test pass.
             // Test the status and the text response. Follow the test order like above.
-            assert.fail(res.status, 200);
-             assert.fail(res.text, 'hello xy_z'/** <==  Put your name here **/);
+            assert.equal(res.status, 200, 'response status should be 200');
+            assert.equal(res.text, 'hello RAPHAEL'/** <==  Put your name here **/);
             done();   // Always call the 'done()' callback when finished.
           });
       });
@@ -120,13 +120,16 @@ suite('Functional Tests', function() {
        // we setup the request for you...
        chai.request(server)
         .put('/travellers')
-        /** send {surname: 'Colombo'} here **/
-        // .send({...})
+        .send ({name: 'Cristoforo', surname: 'Colombo', dates: '1451 - 1506'})
         .end(function(err, res){
           
           /** your tests here **/
-          assert.fail(); // remove this after adding tests
-          
+          assert.equal(res.status, 200, 'res.status should be 200');
+          assert.equal(res.type, 'application/json', 'response should be json');
+          assert.equal(res.body.name, 'Cristoforo', 'res.body.name should be "Cristoforo"');
+          assert.equal(res.body.surname, 'Colombo', 'res.body.surname should be "Colombo"' );
+          assert.equal(res.body.dates, '1451 - 1506', 'res.body.dates should be "1451 - 1506"' );
+          //assert.fail(); // remove this after adding tests     
           done(); // Never forget the 'done()' callback...
         });
       });
@@ -134,12 +137,19 @@ suite('Functional Tests', function() {
       /** Repetition is the mother of learning. **/
       // Try it again. This time without help !!
       test('send {surname: "da Verrazzano"}', function(done) {
-        /** place the chai-http request code here... **/
-        
-        /** place your tests inside the callback **/
-        
-        assert.fail(); // remove this after adding tests
-        done();
+          /** place the chai-http request code here... **/
+          chai.request(server)
+          .put('/travellers')
+          .send({name: 'Giovanni', surname: 'da Verrazzano'})
+          .end(function(err, res){
+          /** place your tests inside the callback **/
+            assert.equal(res.status, 200, 'res.status should be 200');
+            assert.equal(res.type, 'application/json', 'res.type should be json');
+            assert.equal(res.body.name, 'Giovanni', 'res.name should be Giovanni');
+            assert.equal(res.body.surname, 'da Verrazzano', 'res.surname should be da Verrazzano');
+            //assert.fail(); // remove this after adding tests
+            done();
+          });
       });
     });
 
