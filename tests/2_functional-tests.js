@@ -231,7 +231,7 @@ suite('Functional Tests', function() {
 
       /** Now it's your turn. Please don't use the keyword #example in the title. **/
       
-      test('submit "surname" : "Colombo" - write your e2e test...', function(done) {
+      test('#RAPH - submit "surname" : "Colombo" - write your e2e test...', function(done) {
 
         // fill the form...
         // then submit it pressing 'submit' button.
@@ -270,14 +270,23 @@ suite('Functional Tests', function() {
       
       /** Try it again... No help this time **/
       test('submit "surname" : "Vespucci" - write your e2e test...', function(done) {
+        browser
+        .fill('surname', 'Vespucci')
+        .pressButton('submit', function(){
+          browser.assert.success();
+          browser.assert.text('span#name', 'Amerigo');
+          browser.assert.text('span#surname', 'Vespucci');
+          browser.assert.element('span#dates', 1);
+          done();
+        })
 
         // fill the form, and submit.
         // assert that status is OK 200
         // assert that the text inside the element 'span#name' is 'Amerigo'
         // assert that the text inside the element 'span#surname' is 'Vespucci'
         // assert that the element(s) 'span#dates' exist and their count is 1
-        assert.fail();
-        done();
+        //assert.fail();
+        //done();
       
       });
     });
